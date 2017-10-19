@@ -1,0 +1,11 @@
+package task4;
+
+public interface Flyer {
+
+	public void takeoff(); // Æð·É
+
+	public void land(); // ×ÅÂ½
+
+	public void fly(); // ·ÉÐÐ
+
+}
