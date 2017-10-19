@@ -1,0 +1,17 @@
+# 此为注释 – 将被 Git 忽略
+
+# Build Artifacts
+bin/
+
+# Eclipse Project Files
+
+.classpath
+.project
+.settings/
+
+# IntelliJ IDEA Files
+
+*.iml
+*.ipr
+*.iws
+*.idea
