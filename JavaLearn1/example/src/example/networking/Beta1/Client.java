@@ -1,57 +1,58 @@
 package example.networking.Beta1;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+/**
+ * Description: Client
+ *
+ *
+ * Author: ${Vapor}
+ */
+
+import java.io.*;
 import java.net.Socket;
-//import java.net.UnknownHostException;
+import java.util.Scanner;
 
 public class Client {
 
+
     public Socket socket;
-    public BufferedReader bufferedReader1;
-    public BufferedReader bufferedReader2;
+    private BufferedReader bufferedReader1;
     public PrintWriter out;
 
-    public Client() {
+    private Client() {
         try {
-            socket = new Socket("localhost", 1997);
+            socket = new Socket("localhost", 8788);
+            DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
+            DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
+            Scanner scanner = new Scanner(System.in);
+            String str = null;
+            serverReply(dataInputStream);
+            while ((str = scanner.nextLine()) != null) {
+                dataOutputStream.writeUTF(str);
+                System.out.println("Client send msg : " + str);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        new Thread(() -> {
 
+    }
 
-            try{
-                bufferedReader1 = new BufferedReader(new InputStreamReader(System.in));
-                out = new PrintWriter(socket.getOutputStream(), true);
-                String str;
-                while ((str = bufferedReader1.readLine()) != null) {
-                    out.println(str);
+    private void serverReply(final DataInputStream dataInputStream) {
+
+        new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                String readLine = null;
+                try {
+                    while ((readLine = dataInputStream.readUTF()) != null) {
+                        System.out.println("Client receive msg from server : " + readLine);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-                bufferedReader1.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }finally {
-                out.close();
             }
-        }).start();
-
-        new Thread(() -> {
-            try {
-                bufferedReader2 = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                String str = null;
-                while ((str = bufferedReader2.readLine()) != null) {
-                    System.out.println("receive from server:" + str);
-                }
-                bufferedReader2.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }).start();
-
+        }.start();
     }
 
     public static void main(String[] args) {

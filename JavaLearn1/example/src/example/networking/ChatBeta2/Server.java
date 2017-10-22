@@ -15,7 +15,7 @@ public class Server {
     public void startServer(){
         try {
             //服务器在9990端口监听客户端的连接
-            ServerSocket ss = new ServerSocket(9999);
+            ServerSocket ss = new ServerSocket(9998);
             System.out.println("server is listening...");
             while(true){
                 //阻塞的accept方法，当一个客户端连接上，才会返回Socket对象

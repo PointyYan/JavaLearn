@@ -15,7 +15,7 @@ public class Client {
     public void startClient(){
         try {
             //连接到服务器
-            Socket socket = new Socket("localhost", 9999);
+            Socket socket = new Socket("localhost", 9998);
             DataInputStream dis = new DataInputStream(socket.getInputStream());
             DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
             Scanner scanner = new Scanner(System.in);
