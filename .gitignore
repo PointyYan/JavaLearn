@@ -16,4 +16,4 @@ bin/
 *.ipr
 *.iws
 *.idea
-.out/
+out/
