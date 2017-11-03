@@ -21,6 +21,7 @@ public class LambdaTest {
         Arrays.sort(plants, (first, second) ->
                 first.length() - second.length()
         );
+        //方法引用
         Arrays.sort(plants, Comparator.comparingInt(String::length)
         );
         System.out.println(Arrays.toString(plants));
