@@ -1,0 +1,90 @@
+public class CopyBytes {
+  public static void main(String[] args) throws IOException {
+    File inputFile = new File("input.txt");
+    File outputFile = new File("output.txt");
+
+    FileInputStream in = new FileInputStream(inputFile);
+    FileOutputStream out = new FileOutputStream(outputFile);
+    int c;
+
+    while ((c = in.read()) != -1)
+      out.write(c);
+
+    in.close();
+    out.close();
+  }
+}
+
+public class Attr {
+  public static void main(String args[]) {
+    File path = new File(args[0]); // grab command-line argument
+    String exists = getYesNo(path.exists());
+    String canRead = getYesNo(path.canRead());
+    String canWrite = getYesNo(path.canWrite());
+    String isFile = getYesNo(path.isFile());
+    String isHid = getYesNo(path.isHidden());
+    String isDir = getYesNo(path.isDirectory());
+    String isAbs = getYesNo(path.isAbsolute());
+    System.out.println("File attributes for '" + args[0] + "'");
+    System.out.println("Exists    : " + exists);
+    if (path.exists()) {
+      System.out.println("Readable   : " + canRead);
+      System.out.println("Writable   : " + canWrite);
+      System.out.println("Is directory : " + isDir);
+      System.out.println("Is file    : " + isFile);
+      System.out.println("Is hidden   : " + isHid);
+      System.out.println("Absolute path : " + isAbs);
+    }
+  }
+
+  private static String getYesNo(boolean b) {
+    return (b ? "Yes" : "No");
+  }
+}
+
+
+public class FindDirectories {
+  public static void main(String[] args) {
+    try {
+      File pathName = new File("c:\\");
+      String[] fileNames = pathName.list();
+
+      for (int i = 0; i < fileNames.length; i++) {
+        File tf = new File(pathName.getPath(), fileNames[i]);
+        if (tf.isDirectory()) {
+          System.out.println(tf.getCanonicalPath());
+        }
+      }
+    } catch (IOException e) {
+      System.out.println("Error: " + e);
+    }
+  }
+}
+
+public class Dir {
+  static int indentLevel = -1;
+
+  static void listPath(File path) {
+    File files[]; 
+    indentLevel++; 
+
+    files = path.listFiles();
+
+    Arrays.sort(files);
+    for (int i = 0, n = files.length; i < n; i++) {
+      for (int indent = 0; indent < indentLevel; indent++) {
+        System.out.print("  ");
+      }
+      System.out.println(files[i].toString());
+      if (files[i].isDirectory()) {
+
+        listPath(files[i]);
+      }
+    }
+    indentLevel--; 
+  }
+
+  public static void main(String args[]) {
+    listPath(new File("c:\\"));
+  }
+}

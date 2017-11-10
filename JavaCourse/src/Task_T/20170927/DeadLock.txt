@@ -1,0 +1,58 @@
+class A {
+	public synchronized void foo(B b) {
+		System.out.println(Thread.currentThread().getName()
+				+ "inside A.foo()"); 
+		try {
+			Thread.sleep(200);
+		} catch (InterruptedException ex) {
+			ex.printStackTrace();
+		}
+		System.out.println(Thread.currentThread().getName()
+				+ "calling B.last()"); 
+		b.last();
+	}
+
+	public synchronized void last() {
+		System.out.println("inside A.last()");
+	}
+}
+
+class B {
+	public synchronized void bar(A a) {
+		System.out.println(Thread.currentThread().getName()
+				+ " inside B.bar()"); 
+		try {
+			Thread.sleep(200);
+		} catch (InterruptedException ex) {
+			ex.printStackTrace();
+		}
+		System.out.println(Thread.currentThread().getName()
+				+ "calling A.last()");
+		a.last();
+	}
+
+	public synchronized void last() {
+		System.out.println("inside B.last()");
+	}
+}
+
+public class DeadLock  {
+
+	public static void main(String[] args) {
+		final A a = new A();
+		final B b = new B();
+		
+		new Thread(new Runnable(){
+			@Override
+			public void run() {
+				a.foo(b);				
+			}			
+		}).start();
+		new Thread(new Runnable(){
+			@Override
+			public void run() {
+				b.bar(a);;				
+			}			
+		}).start();
+	}
+}
